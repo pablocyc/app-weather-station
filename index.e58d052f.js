@@ -86,6 +86,12 @@ const h=function(){const e=document.createElement("link").relList;if(e&&e.suppor
         margin: 0;
       }
 
+      .value span {
+        font-size: 1.6rem;
+        padding-left: 0.5rem;
+        color: var(--primary-color);
+      }
+
       .vs-value {
         display: flex;
         flex-direction: row;
@@ -105,7 +111,7 @@ const h=function(){const e=document.createElement("link").relList;if(e&&e.suppor
       .vs {
         opacity: 0.5;
       }
-    `}connectedCallback(){this.sensor=this.getAttribute("title")||"sensor",this.icon=this.getAttribute("icon"),this.render()}toPascalCase(e){return e.split(" ").map(s=>s.charAt(0).toUpperCase()+s.slice(1)).join("")}render(){this.shadowRoot.innerHTML=`
+    `}connectedCallback(){this.sensor=this.getAttribute("title")||"sensor",this.icon=this.getAttribute("icon"),this.unit=this.getAttribute("unit"),this.render()}toPascalCase(e){return e.split(" ").map(s=>s.charAt(0).toUpperCase()+s.slice(1)).join("")}render(){this.shadowRoot.innerHTML=`
     <style>${c.styles}</style>
     <div class="container">
       <header class="header">
@@ -119,7 +125,7 @@ const h=function(){const e=document.createElement("link").relList;if(e&&e.suppor
       </header>
       <main class="main">
         <div class="current-value">
-          <h2 class="value">25.4\xB0</h2>
+          <h2 class="value">25.4<span>${this.unit}</span></h2>
           <div class="vs-value">
             <img src="icons/arrow-up.svg" alt="arrow-up">
             <p class="percent">20%</p>
@@ -141,27 +147,30 @@ const h=function(){const e=document.createElement("link").relList;if(e&&e.suppor
       }
 
       .sensors-input {
-        margin: 0.5rem;
-        border: 1px solid var(--primary-color);
+        margin-right: 0.8rem;
+        margin-bottom: 1rem;
+        border: 1.5px solid var(--primary-color);
         border-radius: 0.5rem;
         color: #0009;
         background-color: #F9F5FF;
       }
-
+      
       input[type="checkbox"] {
+        cursor: pointer;
         margin: 0.5rem;
         accent-color: var(--primary-color);
         background-color: red;
       }
-
+      
       label {
+        cursor: pointer;
         font-weight: 500;
         font-size: 1.2rem;
         margin-right: 0.5rem;
         opacity: 0.8;
       }
-    `}handleEvent(e){e.type==="change"&&this.dispatchEvent(new CustomEvent("checkbox",{detail:{id:e.path[0].id,checked:e.path[0].checked},bubbles:!0,composed:!0}))}connectedCallback(){this.sensors=this.getAttributeNames(),this.render(),this.init()}init(){this.inputs=this.shadowRoot.querySelectorAll("input"),this.inputs.forEach(e=>e.addEventListener("change",this))}genCheckbox(e){return e.map(s=>` <div class="sensors-input"><input type="checkbox" id="${s}" name="${s}"> <label for="${s}">${s.slice(0,this.getValueName(s))}</label></div> `).join("")}getValueName(e){return this.getAttribute(e)||e}render(){this.shadowRoot.innerHTML=`
+    `}handleEvent(e){e.type==="change"&&this.dispatchEvent(new CustomEvent("checkbox",{detail:{id:e.path[0].id,checked:e.path[0].checked,unit:this.getAttribute(e.path[0].id)},bubbles:!0,composed:!0}))}connectedCallback(){this.sensors=this.getAttributeNames(),this.render(),this.init()}init(){this.inputs=this.shadowRoot.querySelectorAll("input"),this.inputs.forEach(e=>e.addEventListener("change",this))}genCheckbox(e){return e.map(s=>` <div class="sensors-input"><input type="checkbox" id="${s}" name="${s}"> <label for="${s}">${s}</label></div> `).join("")}render(){this.shadowRoot.innerHTML=`
     <style>${a.styles}</style>
     <div class="container">
       ${this.genCheckbox(this.sensors)}
-    </div>`}}customElements.define("sensors-checkbox",a);document.createElement("card-sensor");const d=document.querySelector(".main");document.addEventListener("checkbox",l=>{const{id:e,checked:s}=l.detail;if(s){const i=document.createElement("card-sensor");i.setAttribute("title",e),i.setAttribute("icon",`icons/icon-${e}.svg`),d.appendChild(i)}else{const i=document.querySelector(`card-sensor[title="${e}"]`);d.removeChild(i)}});
+    </div>`}}customElements.define("sensors-checkbox",a);document.createElement("card-sensor");const d=document.querySelector(".main");document.addEventListener("checkbox",l=>{const{id:e,checked:s,unit:i}=l.detail;if(s){const t=document.createElement("card-sensor");t.setAttribute("title",e),t.setAttribute("icon",`icons/icon-${e}.svg`),t.setAttribute("unit",i),d.appendChild(t)}else{const t=document.querySelector(`card-sensor[title="${e}"]`);d.removeChild(t)}});
