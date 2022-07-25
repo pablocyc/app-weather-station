@@ -1,0 +1,114 @@
+@font-face {
+  font-family: Montserrat;
+  font-weight: 700;
+  src:
+    url("fonts/Montserrat-Bold.woff2") format("woff2"),
+    url("fonts/Montserrat-Bold.woff") format("woff"),
+    url("fonts/Montserrat-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Montserrat;
+  font-weight: 500;
+  src:
+    url("fonts/Montserrat-Medium.woff2") format("woff2"),
+    url("fonts/Montserrat-Medium.woff") format("woff"),
+    url("fonts/Montserrat-Medium.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Montserrat;
+  font-weight: 400;
+  src:
+    url("fonts/Montserrat-Regular.woff2") format("woff2"),
+    url("fonts/Montserrat-Regular.woff") format("woff"),
+    url("fonts/Montserrat-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 500;
+  src:
+    url("fonts/Inter-Medium.woff2") format("woff2"),
+    url("fonts/Inter-Medium.woff") format("woff"),
+    url("fonts/Inter-Medium.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  --text-color: #222;
+  --bg-color: #eee;
+  --accent-color: #ee46bc;
+  --primary-color: #7f56d9;
+  --gray-color: #e7e6eb;
+  --border-color: #000;
+  --up-color: #c01048;
+  --down-color: #1849a9;
+  --transition: color 0.2s, background-image 0.7s ease-in-out;
+  --shadow-color: 286deg 36% 56%;
+  --shadow-elevation-low:
+    0.3px 0.5px 0.7px hsl(var(--shadow-color) / 34%),
+    0.4px 0.8px 1px -1.2px hsl(var(--shadow-color) / 34%),
+    1px 2px 2.5px -2.5px hsl(var(--shadow-color) / 34%);
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  background-attachment: fixed;
+  color: var(--text-color);
+  transition: var(--transition);
+  font-family: Montserrat, sans-serif;
+}
+
+body.dark {
+  --text-color: #eee;
+  --bg-color: #101823;
+  --gray-color: #1d2a3a;
+  --border-color: #7f56d9;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.app-title {
+  display: flex;
+  align-items: flex-end;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  margin-left: 1rem;
+}
+
+path {
+  stroke: var(--text-color);
+  fill: var(--text-color);
+}
+
+.btn-install {
+  user-select: none;
+  cursor: pointer;
+  border: 3px solid;
+  border-image:
+    linear-gradient(-90deg, #ff9100 0%, #f10366 50%, #6173ff 100%)
+    0 0 1 0;
+  padding: 0 0.4rem;
+}
+
+.main {
+  margin: 2rem auto;
+  display: flex;
+  width: 90vw;
+  flex-direction: column;
+  gap: 1rem;
+}
