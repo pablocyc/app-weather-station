@@ -2,14 +2,13 @@ class CardSensor extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this.value = 0;
   }
 
   static get styles() {
     return /* css */`
       :host {
-        border-left: 4px outset var(--border-color);
-        border-bottom: 4px outset var(--border-color);
-        margin-top: 1rem;
+        width: 100%;
       }
 
       .container {
@@ -17,6 +16,7 @@ class CardSensor extends HTMLElement {
         border-radius: 0 1rem 0 0;
         padding: 1rem;
         background-color: var(--gray-color);
+        box-shadow: -4px 4px var(--border-color);
       }
 
       .header {
@@ -42,16 +42,23 @@ class CardSensor extends HTMLElement {
         height: 32px;
       }
 
-      .btn-chart img {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        box-shadow: var(--shadow-elevation-low);
+      .btn-chart {
+        width: 28px;
+        height: 28px;
+        background: #f9f5ff;
+        border: none;
+        cursor: pointer;
+        border: 1px solid #000;
+        border-radius: 0 6px 0 0;
+        box-shadow: -2px 2px var(--border-color);
+        padding: 0;
+        margin-right: 1px;
       }
 
-      .btn-chart {
-        background: none;
-        border: none;
+      .btn-chart img {
+        width: 18px;
+        height: 18px;
+        padding-top: 3px;
       }
 
       .main {
@@ -71,6 +78,12 @@ class CardSensor extends HTMLElement {
         font-size: 2.2rem;
         font-weight: 500;
         margin: 0;
+      }
+
+      .value span {
+        font-size: 1.6rem;
+        padding-left: 0.5rem;
+        color: var(--primary-color);
       }
 
       .vs-value {
@@ -98,6 +111,7 @@ class CardSensor extends HTMLElement {
   connectedCallback() {
     this.sensor = this.getAttribute("title") || "sensor";
     this.icon = this.getAttribute("icon");
+    this.unit = this.getAttribute("unit");
     this.render();
   }
 
@@ -106,6 +120,17 @@ class CardSensor extends HTMLElement {
       .split(" ")
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join("");
+  }
+
+  onData(onGetSensors) {
+    onGetSensors(snapshot => {
+      snapshot.forEach(doc => {
+        if (doc.id === this.sensor) {
+          this.value = doc.data()[Object.keys(doc.data()).pop()];
+          this.render();
+        }
+      });
+    });
   }
 
   render() {
@@ -123,7 +148,7 @@ class CardSensor extends HTMLElement {
       </header>
       <main class="main">
         <div class="current-value">
-          <h2 class="value">25.4°</h2>
+          <h2 class="value">${this.value}<span>${this.unit}</span></h2>
           <div class="vs-value">
             <img src="icons/arrow-up.svg" alt="arrow-up">
             <p class="percent">20%</p>

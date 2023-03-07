@@ -107,8 +107,13 @@ path {
 
 .main {
   margin: 2rem auto;
-  display: flex;
   width: 90vw;
+}
+
+.container-cards {
+  margin-top: 2rem;
+  display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1rem;
 }
